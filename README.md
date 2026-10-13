@@ -4,8 +4,7 @@ Aplicación web desarrollada como proyecto capstone para la gestión y consulta 
 
 ## Enlaces
 
-* Demo en vivo: https://tu-app.netlify.app
-* Repositorio GitHub: https://github.com/tu-usuario/emerald-bookshelf
+* Repositorio GitHub: https://github.com/leonard-soft/emerald-bookshelf
 
 ## Pila Tecnológica
 
@@ -60,6 +59,3 @@ Nota: El token generado es puramente simulado para cumplir con los requisitos de
 * src/services/   : Mapeo y llamadas a la API de Google Books (booksApi).
 * src/__tests__/  : Pruebas unitarias e integración con Jest y RTL.
 
-## Despliegue
-
-La SPA está configurada para desplegarse mediante plataformas serverless (Vercel o Netlify) utilizando los comandos estándar de Vite (`npm run build` con salida en `dist`). Se incluye la regla de reescritura de rutas en `public/_redirects` para soportar el enrutado en el cliente.
