@@ -76,9 +76,15 @@ export async function getBook(id: string, signal?: AbortSignal): Promise<Book> {
     thumbnail = `https://covers.openlibrary.org/b/id/${raw.covers[0]}-M.jpg`;
   }
 
+  const authors: string[] = [];
+  if (Array.isArray(raw.authors)) {
+    authors.push(...raw.authors.map((a: any) => a.name || 'Autor desconocido'));
+  }
+
   return {
     id,
     title: raw.title ?? 'Sin título',
+    authors: authors.length > 0 ? authors : ['Autor desconocido'],
     category: raw.subjects?.[0] ?? 'General',
     thumbnail,
     description: desc ? String(desc).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() : undefined,
