@@ -1,14 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap');
 
 :root {
-    --bg-base: #06090e;
-    --bg-surface: #0b111a;
-    --bg-card: rgba(15, 23, 42, 0.65);
-    --bg-card-hover: rgba(20, 30, 55, 0.85);
+    --bg-base: #05080d;
+    --bg-surface: #0a1018;
+    --bg-card: rgba(13, 22, 34, 0.7);
+    --bg-card-hover: rgba(18, 32, 48, 0.9);
 
     --emerald-primary: #059669;
+    --emerald-deep: #064e3b;
     --emerald-light: #34d399;
-    --emerald-glow: rgba(52, 211, 153, 0.15);
+    --emerald-glow: rgba(52, 211, 153, 0.18);
+    --emerald-aura: rgba(16, 185, 129, 0.10);
 
     --accent-mint: #a7f3d0;
     --text-main: #f1f5f9;
@@ -17,13 +19,16 @@
     --danger-bg: rgba(239, 68, 68, 0.12);
     --danger-text: #f87171;
 
-    --border-subtle: rgba(52, 211, 153, 0.12);
-    --border-focus: rgba(52, 211, 153, 0.4);
+    --border-subtle: rgba(52, 211, 153, 0.14);
+    --border-focus: rgba(52, 211, 153, 0.45);
 
-    --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.55);
+    --shadow-emerald: 0 12px 40px -12px rgba(5, 150, 105, 0.45);
     --radius-sm: 8px;
     --radius-md: 14px;
     --radius-lg: 20px;
+
+    --sheen: linear-gradient(105deg, transparent 40%, rgba(167, 243, 208, 0.18) 50%, transparent 60%);
 }
 
 * {
@@ -36,12 +41,14 @@ body {
     color: var(--text-main);
     background-color: var(--bg-base);
     background-image:
-    radial-gradient(circle at 15% 10%, rgba(5, 150, 105, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+    radial-gradient(circle at 15% 10%, rgba(5, 150, 105, 0.16) 0%, transparent 45%),
+    radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.10) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(6, 78, 59, 0.20) 0%, transparent 70%);
     min-height: 100vh;
     line-height: 1.6;
 }
 
+/* ===== Tipografía ===== */
 h1, h2, h3, .brand {
     font-family: 'Playfair Display', Georgia, serif;
     font-weight: 700;
@@ -51,9 +58,11 @@ h1, h2, h3, .brand {
 h1 {
     font-size: clamp(2rem, 4vw, 3rem);
     margin: 0.5rem 0 1.25rem;
-    background: linear-gradient(135deg, var(--text-main) 30%, var(--accent-mint) 100%);
+    background: linear-gradient(135deg, var(--text-main) 20%, var(--accent-mint) 60%, var(--emerald-light) 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 18px rgba(52, 211, 153, 0.25));
 }
 
 h3 {
@@ -65,11 +74,12 @@ h3 {
 a {
     color: var(--emerald-light);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 
 a:hover {
     color: var(--accent-mint);
+    text-shadow: 0 0 12px var(--emerald-glow);
 }
 
 .container, .navbar {
@@ -78,6 +88,7 @@ a:hover {
     padding: 1.25rem;
 }
 
+/* ===== Navbar con glow inferior ===== */
 .navbar {
     display: flex;
     flex-wrap: wrap;
@@ -89,7 +100,8 @@ a:hover {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(6, 9, 14, 0.8);
+    background: rgba(5, 8, 13, 0.85);
+    box-shadow: 0 8px 30px -10px rgba(5, 150, 105, 0.25);
 }
 
 .navbar nav {
@@ -120,30 +132,37 @@ a:hover {
     left: 0;
     width: 100%;
     height: 2px;
-    background: var(--emerald-light);
+    background: linear-gradient(90deg, transparent, var(--emerald-light), transparent);
     border-radius: 2px;
+    box-shadow: 0 0 10px var(--emerald-light);
 }
 
 .brand {
     font-size: 1.6rem;
     font-weight: 700;
-    color: var(--emerald-light);
+    background: linear-gradient(135deg, var(--emerald-light), var(--accent-mint));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     text-decoration: none;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    filter: drop-shadow(0 0 10px rgba(52, 211, 153, 0.35));
 }
 
 .user-chip {
     color: var(--text-muted);
     font-size: 0.85rem;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(52, 211, 153, 0.05);
     padding: 0.35rem 0.8rem;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border-subtle);
 }
 
+/* ===== Paneles con aura esmeralda ===== */
 .panel {
+    position: relative;
     background: var(--bg-card);
     backdrop-filter: blur(20px);
     border: 1px solid var(--border-subtle);
@@ -151,14 +170,26 @@ a:hover {
     padding: 1.75rem;
     margin-top: 1.25rem;
     box-shadow: var(--shadow-card);
-    transition: border-color 0.2s ease;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    overflow: hidden;
+}
+
+.panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 0%, var(--emerald-aura) 0%, transparent 55%);
+    pointer-events: none;
 }
 
 .panel:hover {
-    border-color: rgba(52, 211, 153, 0.25);
+    border-color: rgba(52, 211, 153, 0.3);
+    box-shadow: var(--shadow-card), var(--shadow-emerald);
 }
 
+/* ===== Botones con brillo pulsante ===== */
 .btn {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -171,15 +202,29 @@ a:hover {
     cursor: pointer;
     text-decoration: none;
     font-size: 0.95rem;
-    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.35);
+    overflow: hidden;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--sheen);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.btn:hover::after {
+    transform: translateX(100%);
 }
 
 .btn:hover {
     background: linear-gradient(135deg, var(--emerald-light), var(--emerald-primary));
     color: #06090e;
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px var(--emerald-glow);
+    box-shadow: 0 6px 20px var(--emerald-glow), 0 0 24px rgba(52, 211, 153, 0.3);
 }
 
 .btn:disabled {
@@ -205,6 +250,7 @@ a:hover {
 :focus-visible {
     outline: 2px solid var(--emerald-light);
     outline-offset: 3px;
+    box-shadow: 0 0 0 6px rgba(52, 211, 153, 0.12);
 }
 
 .skip-link {
@@ -223,6 +269,7 @@ a:hover {
     top: 1.25rem;
 }
 
+/* ===== Inputs ===== */
 input, select {
     width: 100%;
     background: var(--bg-surface);
@@ -238,7 +285,7 @@ input, select {
 input:focus, select:focus {
     outline: none;
     border-color: var(--emerald-light);
-    box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.15);
+    box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.15), 0 0 18px rgba(52, 211, 153, 0.12);
 }
 
 label {
@@ -259,6 +306,7 @@ label {
     padding: 1rem;
     border-radius: var(--radius-md);
     border: 1px solid var(--border-subtle);
+    box-shadow: inset 0 1px 0 rgba(167, 243, 208, 0.05);
 }
 
 .field {
@@ -269,6 +317,7 @@ label {
     flex: 1 1 260px;
 }
 
+/* ===== Grid y tarjetas de libros ===== */
 .grid {
     list-style: none;
     padding: 0;
@@ -279,6 +328,7 @@ label {
 }
 
 .card {
+    position: relative;
     height: 100%;
     background: var(--bg-card);
     border: 1px solid var(--border-subtle);
@@ -290,12 +340,46 @@ label {
     justify-content: space-between;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: var(--shadow-card);
+    overflow: hidden;
+}
+
+/* Lomo de libro: línea brillante en el borde izquierdo */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, var(--emerald-light), transparent);
+    opacity: 0.4;
+    transition: opacity 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Destello de luz que cruza la tarjeta al hover */
+.card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--sheen);
+    transform: translateX(-120%);
+    transition: transform 0.7s ease;
+    pointer-events: none;
+}
+
+.card:hover::after {
+    transform: translateX(120%);
 }
 
 .card:hover {
     transform: translateY(-4px);
     border-color: var(--border-focus);
-    box-shadow: 0 16px 32px -12px rgba(5, 150, 105, 0.2);
+    box-shadow: 0 16px 32px -12px rgba(5, 150, 105, 0.25), 0 0 24px rgba(52, 211, 153, 0.1);
+}
+
+.card:hover::before {
+    opacity: 1;
+    box-shadow: 0 0 12px var(--emerald-light);
 }
 
 .card-link {
@@ -306,13 +390,27 @@ label {
     height: 100%;
 }
 
+/* Portada con brillo superior tipo laca */
 .card img, .cover-fallback {
+    position: relative;
     width: 100%;
     height: auto;
     aspect-ratio: 2 / 3;
     object-fit: cover;
     border-radius: 6px;
     background: var(--bg-surface);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 6px 16px rgba(0, 0, 0, 0.35);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover img {
+    transform: scale(1.02);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 10px 24px rgba(5, 150, 105, 0.25);
+}
+
+/* Filete de página bajo la portada */
+.card img + *, .cover-fallback + * {
+    position: relative;
 }
 
 .cover-fallback {
@@ -350,6 +448,7 @@ label {
     background: rgba(16, 185, 129, 0.15);
     color: var(--emerald-light);
     border: 1px solid rgba(16, 185, 129, 0.3);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
 }
 
 .badge-out {
@@ -376,6 +475,7 @@ label {
     font-size: 0.9rem;
 }
 
+/* ===== Auth ===== */
 .auth-page {
     display: grid;
     place-items: center;
@@ -390,7 +490,7 @@ label {
     padding: 2.5rem;
     border-radius: var(--radius-lg);
     border: 1px solid var(--border-subtle);
-    box-shadow: var(--shadow-card);
+    box-shadow: var(--shadow-card), var(--shadow-emerald);
     backdrop-filter: blur(20px);
 }
 
@@ -398,6 +498,7 @@ label {
     margin-top: 1.25rem;
 }
 
+/* ===== Detalle ===== */
 .detail-grid {
     display: grid;
     gap: 2rem;
@@ -410,7 +511,8 @@ label {
     aspect-ratio: 2 / 3;
     border-radius: var(--radius-md);
     object-fit: cover;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4), 0 0 30px rgba(52, 211, 153, 0.12);
+    border: 1px solid var(--border-subtle);
 }
 
 .description {
@@ -419,6 +521,7 @@ label {
     font-size: 1.05rem;
 }
 
+/* ===== Radio pills ===== */
 .status-group {
     border: 0;
     padding: 0;
@@ -459,13 +562,14 @@ label {
 .radio-pill span:hover {
     border-color: var(--emerald-light);
     color: var(--text-main);
+    box-shadow: 0 0 10px rgba(52, 211, 153, 0.15);
 }
 
 .radio-pill input:checked + span {
-    background: var(--emerald-primary);
+    background: linear-gradient(135deg, var(--emerald-primary), #047857);
     color: #fff;
     border-color: var(--emerald-light);
-    box-shadow: 0 0 12px rgba(5, 150, 105, 0.4);
+    box-shadow: 0 0 14px rgba(5, 150, 105, 0.45);
 }
 
 .radio-pill input:focus-visible + span {
@@ -473,6 +577,7 @@ label {
     outline-offset: 2px;
 }
 
+/* ===== Préstamos ===== */
 .loan-list {
     list-style: none;
     padding: 0;
@@ -482,6 +587,7 @@ label {
 }
 
 .loan {
+    position: relative;
     display: flex;
     justify-content: space-between;
     gap: 1rem;
@@ -491,6 +597,28 @@ label {
     padding: 1rem 1.25rem;
     border-radius: var(--radius-md);
     border: 1px solid var(--border-subtle);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.loan::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 1.25rem;
+    right: 1.25rem;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--emerald-light), transparent);
+    opacity: 0.3;
+    transition: opacity 0.2s ease;
+}
+
+.loan:hover {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 20px rgba(52, 211, 153, 0.08);
+}
+
+.loan:hover::before {
+    opacity: 0.8;
 }
 
 @media (min-width: 720px) {

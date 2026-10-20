@@ -22,6 +22,7 @@ export default function Login() {
     setErrors(next);
     if (next.email || next.password) return;
     setBusy(true);
+
     try {
       await login(email, password);
     } catch {
