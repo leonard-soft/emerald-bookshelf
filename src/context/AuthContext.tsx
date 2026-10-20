@@ -73,3 +73,5 @@ export function useAuth(): AuthContextValue {
   if (!ctx) throw new Error('useAuth debe usarse dentro de <AuthProvider>');
   return ctx;
 }
+
+export const SIMULATED_TOKEN = 'Bearer mock-token';
