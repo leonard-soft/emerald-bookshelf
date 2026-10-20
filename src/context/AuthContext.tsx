@@ -2,13 +2,12 @@ import { createContext, useCallback, useContext, useMemo, useState, type ReactNo
 import type { Session, User } from '../types';
 
 export const SESSION_KEY = 'emerald_session';
-export const SIMULATED_TOKEN = 'Bearer emerald-token-123';
 
 interface AuthContextValue {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -27,10 +26,32 @@ function readSession(): Session | null {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(readSession);
 
-  const login = useCallback(async (email: string, password: string) => {
-    await new Promise((r) => setTimeout(r, 150));
-    if (!/^\S+@\S+\.\S+$/.test(email) || password.length < 6) throw new Error('Credenciales inválidas');
-    const next: Session = { token: SIMULATED_TOKEN, user: { email, name: email.split('@')[0] } };
+  const login = useCallback(async (username: string, password: string) => {
+    const res = await fetch('https://dummyjson.com/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username,
+        password,
+        expiresInMins: 30,
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error('Credenciales inválidas o error en el servidor');
+    }
+
+    const data = await res.json();
+    const rawToken = data.token || data.accessToken;
+
+    const next: Session = {
+      token: `Bearer ${rawToken}`,
+      user: {
+        email: data.email,
+        name: `${data.firstName} ${data.lastName}`,
+      },
+    };
+
     localStorage.setItem(SESSION_KEY, JSON.stringify(next));
     setSession(next);
   }, []);
@@ -42,7 +63,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(
     () => ({ user: session?.user ?? null, token: session?.token ?? null, isAuthenticated: !!session, login, logout }),
-    [session, login, logout]
+                        [session, login, logout]
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
