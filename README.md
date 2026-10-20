@@ -1,61 +1,78 @@
-# Emerald Bookshelf
+# Emerald Bookshelf 
 
-Aplicación web desarrollada como proyecto capstone para la gestión y consulta de libros en un entorno universitario. Consume la API pública de Google Books para la navegación de catálogo y utiliza una arquitectura basada en contexto para la gestión de sesiones y préstamos en el cliente.
+[![Deployment Status](https://img.shields.io/badge/deployment-live-success?style=flat-square)](https://emerald-bookshelf-tm8y.vercel.app/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+Aplicación web Single Page Application (SPA) desarrollada como proyecto capstone para la gestión y consulta de libros en un entorno universitario. Consume la API de catálogos bibliográficos para la navegación y utiliza una arquitectura basada en contexto para la gestión de sesiones y préstamos en el cliente.
 
 ## Enlaces
 
-* Repositorio GitHub: https://github.com/leonard-soft/emerald-bookshelf
+- **Repositorio GitHub:** [github.com/leonard-soft/emerald-bookshelf](https://github.com/leonard-soft/emerald-bookshelf)
+- **Despliegue en Vivo:** [Ver Aplicación en Producción](https://emerald-bookshelf-tm8y.vercel.app/)
 
-## Pila Tecnológica
+## Stack
 
-* React + TypeScript (Vite)
-* React Router DOM v6
-* Context API (Autenticación y Estado de Préstamos)
-* Jest + React Testing Library
-* CSS personalizado (Tema Emerald & Obsidian, mobile-first)
+- **Core:** React 18 + TypeScript (Vite)
+- **Enrutamiento:** React Router DOM v6
+- **Gestión de Estado:** Context API (`AuthContext`, `LoansContext`)
+- **Testing:** Jest + React Testing Library (RTL)
+- **Estilos:** CSS personalizado con diseño adaptativo (Tema Emerald & Obsidian, *mobile-first*)
 
-## Configuración y Ejecución
+## Configuración y Ejecución Local
 
-Asegúrate de tener Node.js 18 o superior instalado.
+Asegúrate de tener **Node.js 18+** instalado en tu entorno.
 
-1. Instalar dependencias:
+**Clonar el repositorio:**
+
+```bash
+   git clone [https://github.com/leonard-soft/emerald-bookshelf.git](https://github.com/leonard-soft/emerald-bookshelf.git)
+   cd emerald-bookshelf
+```
+**Instalar dependencias:**
+
+```Bash
    npm install
+```
+   
+**Ejecutar en modo de desarrollo:**
 
-2. Modo de desarrollo:
+```Bash
    npm run dev
+```
 
-3. Construcción para producción:
+**Construir para producción:**
+
+```Bash
    npm run build
+```
 
-## Suite de Pruebas
+**Testing**
 
-Para ejecutar las pruebas unitarias y de integración:
+```Bash
+   npm test
+```
 
-npm test
+**Flujo de Autenticación**
 
-Las pruebas están estructuradas bajo la filosofía de React Testing Library (evaluar la interfaz desde la perspectiva de interacción del usuario en lugar de la implementación interna):
+- El usuario envía credenciales en la vista de inicio de sesión.
+- Se realiza una validación en el cliente y AuthContext genera un token de acceso sintético (Bearer emerald-token-123).
+- El estado de la sesión se persiste en localStorage bajo la clave emerald_session para mantener la sesión activa tras recargar.
+- Las rutas privadas están encapsuladas por ProtectedRoute, redirigiendo al login si no se detecta sesión.
+- El historial de préstamos se asocia directamente al identificador del usuario activo.
 
-* Login.test.tsx: Valida el comportamiento del formulario, mensajes de error accesibles y persistencia del token simulado.
-* BookCard.test.tsx: Revisa el renderizado de metadatos del libro, enlaces dinámicos y estados de disponibilidad.
-* Navbar.test.tsx: Verifica la renderización condicional de la barra según el estado de la sesión y el flujo de salida.
-* useBooks.test.tsx: Prueba el custom hook de búsqueda aislando la capa de red mediante mocks de fetch (casos de éxito, error y refetch).
 
-## Flujo de Autenticación
+**Arquitectura del Proyecto**
 
-1. El usuario envía credenciales en la vista de inicio de sesión (/login).
-2. Se realiza una validación básica en el cliente y `AuthContext` genera un token de acceso sintético (`Bearer emerald-token-123`).
-3. El estado de la sesión se persiste en `localStorage` bajo la clave `emerald_session` para mantener la sesión tras recargar.
-4. Las rutas privadas (/profile) están encapsuladas por `ProtectedRoute`, redirigiendo al login si no se detecta una sesión activa.
-5. El historial de préstamos se asocia directamente al identificador del usuario activo (`emerald_loans_<email>`).
+```Plaintext
+src/
+├── components/     # Componentes de interfaz (Navbar, BookCard, BorrowTracker, ProtectedRoute)
+├── context/        # Estado global para sesión y préstamos (AuthContext, LoansContext)
+├── hooks/          # Custom hooks para la integración con la API (useBooks)
+├── pages/          # Vistas principales de la SPA (Catalog, BookDetail, Login, Profile)
+├── services/       # Mapeo y llamadas a la API bibliográfica (booksApi)
+└── __tests__/      # Pruebas unitarias e integración con Jest y RTL
+```
 
-Nota: El token generado es puramente simulado para cumplir con los requisitos del frontend sin depender de un servidor de autenticación dedicado.
 
-## Arquitectura del Proyecto
-
-* src/components/ : Componentes de interfaz (Navbar, BookCard, BorrowTracker, ProtectedRoute).
-* src/context/    : Estado global para sesión y préstamos (AuthContext, LoansContext).
-* src/hooks/      : Custom hooks para la integración con la API (useBooks).
-* src/pages/      : Vistas principales de la SPA (Catalog, BookDetail, Login, Profile).
-* src/services/   : Mapeo y llamadas a la API de Google Books (booksApi).
-* src/__tests__/  : Pruebas unitarias e integración con Jest y RTL.
-
+Desarrollado por **Leonardo David Bermúdez** Forero para Lab Semana 7.
+Este proyecto está bajo la licencia **MIT**.
